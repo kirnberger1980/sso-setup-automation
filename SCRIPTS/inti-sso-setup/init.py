@@ -51,7 +51,7 @@ def change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTarg
     time.sleep(10)
     try:
         print("✚ Adding Test User Sync Filter")
-        groupadd = sso.create_sync_filter("SynchronizationToActiveDirectoryAwsSso","GROUP","prod.d001.loc","RESS_HV_SW_BC_INFOSEC")
+        groupadd = sso.create_sync_filter("SynchronizationToActiveDirectoryAwsSso",SyncType,DomainName,SyncTargetName)
         print(groupadd)
     except:
         print(f"🚨 Error while adding test sync filter.")
