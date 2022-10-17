@@ -12,7 +12,7 @@ awsaccountid = boto3.client('sts').get_caller_identity().get('Account')
 
 sso = session.client('sso')
 
-def change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTargetName):
+def change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTargetName, SyncType, DomainName,SyncObject):
     print(f"⚠️ Changing Source Identity for SSO Instance in region {region}")
     print(f"⚙️ Settings:\n  DirectoryId: {DirectoryId}\n  DirectoryType: {DirectoryType}\n  SyncProfileName: {SyncProfileName}\n  SyncTargetName: {SyncTargetName}")
     response = sso.list_associations()
@@ -51,7 +51,7 @@ def change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTarg
     time.sleep(10)
     try:
         print("✚ Adding Test User Sync Filter")
-        groupadd = sso.create_sync_filter("SynchronizationToActiveDirectoryAwsSso",SyncType,DomainName,SyncTargetName)
+        groupadd = sso.create_sync_filter("SynchronizationToActiveDirectoryAwsSso",SyncType,DomainName,SyncObject)
         print(groupadd)
     except:
         print(f"🚨 Error while adding test sync filter.")
@@ -67,10 +67,10 @@ def change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTarg
 DirectoryId="d-1234" #Needs to be adjusted
 DirectoryType="ADConnector"
 DomainName="test.domain" #Needs to be adjusted
-SyncName ="testgroup" #Needs to be adjusted
+SyncObject ="testgroup" #Needs to be adjusted
 SyncProfileName= "SynchronizationToActiveDirectoryAwsSso"
 SyncTargetName="IdentityStoreForSSO"
 SyncType="GROUP"
 
-change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTargetName, SyncType, DomainName, )
+change_source_identity(DirectoryId, DirectoryType, SyncProfileName, SyncTargetName, SyncType, DomainName,SyncObject)
 
