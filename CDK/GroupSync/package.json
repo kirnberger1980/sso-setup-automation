@@ -1,0 +1,39 @@
+{
+  "name": "cdk",
+  "version": "0.1.0",
+  "bin": {
+    "cdk": "bin/cdk.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "^10.17.60",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "aws-cdk": "^2.40.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda-python-alpha": "^2.41.0-alpha.0",
+    "@aws-sdk/client-cloudformation": "^3.40.0",
+    "@aws-sdk/client-kms": "^3.165.0",
+    "@mhlabs/cfn-diagram": "^1.1.32",
+    "ajv": "^8.10.0",
+    "aws-cdk-lib": "^2.40.0",
+    "cdk-dia": "^0.7.0",
+    "constructs": "^10.0.0",
+    "i": "^0.3.7",
+    "js-base64": "^3.7.2",
+    "npm": "^8.19.1",
+    "source-map-support": "^0.5.16",
+    "typescript-json-schema": "^0.53.0"
+  }
+}

@@ -1,0 +1,65 @@
+version: '3'
+#output: prefixed
+vars:
+  config: # without .json
+  REGION:
+    sh: echo $AWS_REGION
+  CDK_DEFAULT_ACCOUNT:
+    sh: aws sts get-caller-identity |jq -r .
+tasks:
+  deploy:
+    desc: Deploy Stack
+    cmds:
+      - task: clean
+      - task: cdkdeploy
+  synth:
+    desc: synth Stack
+    cmds:
+      - task: clean
+      - cdk synth
+    vars:
+      ACCOUNT:
+        sh: aws sts get-caller-identity |jq -r .Account
+      TAGS:
+        sh: cat tags/tags.json | jq -j '.[]|"--tags " + (.Key)+"="+(.Value)+" "'
+    env:
+      PROCESS_PARAMETERS: values/{{.config}}.json  
+  clean:
+    desc: Clean CDK Out
+    cmds:
+      - rm -rf ./cdk.out
+      - rm -rf ./node-modules
+    silent: true
+  cdkdiff:
+    desc: CDK Diff
+    cmds:
+      - if [[ {{.CDK_DIFF}} = true ]];then cdk diff; echo -n "Continue  (y/n)?"; read CONT; if [ "$CONT" = "n" ]; then echo "NO" | exit 1; else echo "YES"; fi; else exit 0;fi;
+    silent: true
+    interactive: true
+    env:
+      PROCESS_PARAMETERS: values/{{.config}}.json
+    preconditions:
+      - sh: "test {{.config}}"
+        msg: "config Variable was not set"
+      - sh: "test -f values/{{.config}}.json"
+        msg: "Values file not found: values/{{.config}}.json"
+  cdkdeploy:
+    desc: CDK Deploy
+    cmds:
+      - cdk deploy --require-approval never {{.TAGS}}
+      - rm -f $(find ./cdk.out/*assets.json -type f)
+    vars:
+      ACCOUNT:
+        sh: aws sts get-caller-identity |jq -r .Account
+      TAGS:
+        sh: cat tags/tags.json | jq -j '.[]|"--tags " + (.Key)+"="+(.Value)+" "'
+    preconditions:
+      - sh: "test {{.config}}"
+        msg: "config Variable was not set"
+      - sh: "test -f values/{{.config}}.json"
+        msg: "Values file not found: values/{{.config}}.json"
+    env:
+      PROCESS_PARAMETERS: values/{{.config}}.json
+    silent: true
+    interactive: true
+ 
