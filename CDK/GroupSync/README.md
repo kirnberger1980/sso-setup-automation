@@ -5,7 +5,7 @@
 [![coto](https://img.shields.io/badge/sso-coto_dakn-blue.svg)](https://github.com/daknhh/coto)
 
 ## Description
-This solution establishes a Lambda function to oversee Ad-Group Sync Filters within the AWS IAM Identity Center (the successor to AWS SSO). Using LDAPs as the source, it synchronises designated groups with our AWS IAM Identity Center.
+This solution establishes a Lambda function to oversee Ad-Group Sync Filters within the AWS IAM Identity Center (the successor to AWS SSO). Using LDAPs as the source, it synchronises designated groups with your AWS IAM Identity Center.
 The Lambda works autonomously, automatically generating documentation and sending notifications to Microsoft Teams.
 
 ### Architecture
@@ -39,5 +39,9 @@ To securly store Passwort and Username for LDAPs login credentials we are using 
 Please ensure to encrypt your SecretFile and adjust the values before deploying.
 
 ### Deployment
-1. open shell
-2. execute command: `cdk deploy <stackname>`
+1. Open shell
+2. Adjust parameters in value files
+3. Add your KMS key to sops.yaml
+4. Encrypt SecretFile via `sops -e <filename>`
+5. execute command: `assume <accountname>`
+6. execute command: `cdk deploy <stackname>`
