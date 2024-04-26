@@ -5,14 +5,14 @@
 [![coto](https://img.shields.io/badge/sso-coto_dakn-blue.svg)](https://github.com/daknhh/coto)
 
 ## Description
-This solution creates a Lambda to manage Ad-Group Sync Filters in AWS IAM Identity Center (successor to AWS SSO).
-The Lambda will automatically create a documentation and sends notification to MS Teams.
+This solution establishes a Lambda function to oversee Ad-Group Sync Filters within the AWS IAM Identity Center (the successor to AWS SSO). Using LDAPs as the source, it synchronises designated groups with your AWS IAM Identity Center.
+The Lambda works autonomously, automatically generating documentation and sending notifications to Microsoft Teams.
 
 ### Architecture
 ![Architecture](./static/architecture.png)
 
 #### Example Notification
-![Message](./static/message.jpg)
+![Message](./static/message.png)
 
 #### Example Documentation
 ![Documentation](./static/example-dashboard.png)
@@ -26,18 +26,22 @@ The Lambda will automatically create a documentation and sends notification to M
 
 </br>
 
-## Deployment
-
-The deployment is done via task file and deployed to the account via CloudFormaton Stack.
-
 ### Prerequisites
 
 - [AWS CLI](https://aws.amazon.com/de/cli/) is installed and configured
 - [awsume](https://awsu.me/) is installed
-- [Taskfile](https://taskfile.dev/) is installed
 - [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) is installed
 
-### Automated deployment with a Taskfile
-1. open shell
-2. execute command: `awsume DEPLOYMENTACCOUNT`
-3. execute command: `task deploy`.
+### Configuration
+
+Configuration Parameters of this solution are store in value files. You can find an example in: 'values/sandbox'.
+To securly store Passwort and Username for LDAPs login credentials we are using (cdk-sops)[https://github.com/dbsystel/cdk-sops-secrets].
+Please ensure to encrypt your SecretFile and adjust the values before deploying.
+
+### Deployment
+1. Open shell
+2. Adjust parameters in value files
+3. Add your KMS key to sops.yaml
+4. Encrypt SecretFile via `sops -e <filename>`
+5. execute command: `assume <accountname>`
+6. execute command: `cdk deploy <stackname>`
